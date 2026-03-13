@@ -1,8 +1,7 @@
 --Total number of rows
 SELECT
     COUNT(*)
-FROM student_depression
-LIMIT 10;
+FROM student_depression;
 
 SELECT
     *
