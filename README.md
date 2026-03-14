@@ -2,9 +2,9 @@
 
 ## Executive Summary 
 
-This project analyzes factors associated with depression among student using a dataset of over 27000 observations. The objective was to explore how variables such as academic pressure, lifestyle habits, financial stress and psychological factors relate to depression outcomes and to build a composite risk score that helps identify students with a high likelihood of depression.
+This project analyzes factors associated with depression among students using a dataset of over 27000 observations. The objective was to explore how variables such as academic pressure, lifestyle habits, financial stress and psychological factors relate to depression outcomes and to build a composite risk score that helps identify students with a high likelihood of depression.
 
-The analysis combines tools such as Excel, SQL, python and Tableau for data cleaning, analysis and visualization. Results indicate strong relationships between depression and variables such as academic pressure, financial stress, sleep duration, dietary habits and other psychological factors. Students with high composite risk scores show more than double the presence of depression than those with low risk and the former are present in ~30% of the dataset population.
+The analysis combines tools such as Excel, SQL, Python and Tableau for data cleaning, analysis and visualization. Results indicate strong relationships between depression and variables such as academic pressure, financial stress, sleep duration, dietary habits and other psychological factors. Students with high composite risk scores show more than double the presence of depression than those with low risk,the high-risk group represents approximately 30% of the dataset population.
 
 Relevant links:
 
@@ -29,7 +29,7 @@ The project aims to answer the following questions:
 6. Can a combined risk score be constructed to help us identify which students are at a higher risk of depression?
 
 ## Dataset overview
-The dataset is composed of 27901 rows of data with 18 columns with the following structure:
+The dataset is composed of 27901 observations with 18 variables with the following structure:
 
 | No | Field | Type | Description |
 | -- | -- | -- | -- |
@@ -49,33 +49,33 @@ The dataset is composed of 27901 rows of data with 18 columns with the following
 | 14 | suicidal_thoughts | String | Binary indicator (Yes/No) that reflects whether the student has ever experienced suicidal ideation |
 | 15 | study_work_hours | Integer | Average number of hours per day the student dedicates to work or study |
 | 16 | financial_stress | Integer | Measure of the stress experienced due to financial concerns |
-| 17 | family_mental_history| String | Indicates whether there is a family history of mental illness (Yes/No) |
+| 17 | family_mental_history | String | Indicates whether there is a family history of mental illness (Yes/No) |
 | 18 | depression | Integer | Target variable that indicates whether the student is experiencing depression (Yes = 1/No = 0) |
 
-## Limitations And Assupmtions
+## Limitations And Assumptions
 ### Limitations
 - The dataset is observational and does not imply causal relationships.
 - Psychological variables such as suicidal thoughts may be self-reported and subject to bias.
-- The variable suicidal thoughts does not specify whether the student experience these thoughts at a daily, weekly, monthly bases or just once in their life.
-- There are not socioeconomic or institutional environment factors within the dataset.
-- There are not variables within the dataset that express if the student has experience depression before in their life, to what frequency have they experience it or whether they sought help.
+- The variable suicidal thoughts does not specify whether the student experiences these thoughts at a daily, weekly, monthly basis or just once in their life.
+- There are no socioeconomic or institutional environment variables within the dataset.
+- There are not variables within the dataset that express if the student has experienced depression before in their life, to what frequency have they experience it or whether they sought help.
 - Some variables contain categorical groupings (e.g. sleep_duration or dietary_habits) that limit precision.
 
 ### Assumptions
-- Inconsistent values in numerical fields were replace with the mean of the whole field.
+- Inconsistent values in numerical fields were replaced with the mean of the whole field.
 - The composite risk score assumes equal contribution from each included factor.
-- Only students with the 'profession' value of 'student' were kept into consideration. These student represent 99% of the dataset.
-- Value in the 'city' field point to locations in the country of India
+- Only students with the 'profession' value of 'student' were kept into consideration. These students represent 99% of the dataset.
+- Values in the 'city' field point to locations in the country of India
 
 ## Tools Used
 
 The analysis was conducted using the following tools:
 
-- Excel - Initial data exploration and Null values handling
+- Excel - Data exploration and Null values handling
 - PostgreSQL - Data storage
 - Visual Studio Code - Main workspace for queries and coding
-- SQL - secondary data exploration and cleaning
-- Python - Data analysis and feature engineering
+- SQL - Data cleaning and transformaiton
+- Python (Pandas, Seaborn) - Data analysis and feature engineering
 - Tableau - Interactive dashboard creation and visualization
 - GitHub – Project version control and documentation
 
@@ -84,7 +84,7 @@ The analysis was conducted using the following tools:
 This process took place with the use of SQL in Visual Studio Code.
 
 Key steps:
-- Converted values of '?' in the financial_stress column to the field mean of 3
+- Converted '?' values in the financial_stress column to the column mean of 3
 - Checked for duplicates and null values within all fields, no duplicates nor null values were found
 - Created a new table (student_survey_clean) with the following fields:
 
@@ -112,7 +112,7 @@ WHERE profession = 'Student';
 
 ![Inconsistent city values](images/Inconsistent_city_values.png)
 
-- Fields related to 'work' (e.g., 'work_pressure', 'job_satisfaction') were not taken into consideration 
+- Fields related to employment (e.g., 'work_pressure', 'job_satisfaction') were excluded from the analysis.
 
 -Created a new field with ranges for the 'cgpa' field to simplify the analysis and visualization process
 
@@ -136,14 +136,14 @@ CASE
 END;
 ```
 
-The result table consists of 27870 rows of data and 15 columns.
+The result table consists of 27870 observations and 15 variables.
 
 ## Analysis
-the data was analyzed using python with the library of pandas. The new cleaned table was loaded to a jupyter notebook with a SQL to Python connection using the 'sqlalchemy' library. After this, the following main steps took place:
+The data was analyzed using Python with the Pandas library. The new cleaned table was loaded to a jupyter notebook with a SQL to Python connection using the 'sqlalchemy' library. After this, the following main steps took place:
 
 ### Exploratory Data Analysis
 
-First, the distributions was gender, age and cgpa range were calculated, visualized and paired with their respective depression rate.
+First, the distributions of gender, age and cgpa range were calculated, visualized and paired with their respective depression rate.
 ![alt](images/Overview.png)
 
 
@@ -160,6 +160,8 @@ plt.show()
 
 ![alt text](image.png)
 
+The correlation matrix show a positive correlation between depression and academic pressure, study hours and financial stress
+
 
 New fields based on 'suicidal_thoughts' and 'family_mental_history' were created to interpret these fields into numerical values.
 
@@ -168,14 +170,14 @@ df['suicidal_binary'] = df['suicidal_thoughts'].map({'Yes': 1, 'No': 0})
 df['family_history_binary'] = df['family_mental_history'].map({'Yes': 1, 'No': 0})
 ```
 
-Fields related to academic performance, finances, lifestyle and psychological factor also were contrasted with the overall depression rate and visualized.
+Fields related to academic performance, finances, lifestyle and psychological factor also were analyzed  with the overall depression rate and visualized.
 
 ![alt](images/Academic%20and%20Lifestyle.png)
 
 ![alt](images/Psychological%20and%20Financial.png)
 
 ### Feature Engineering
-To identify which students were at risk due to pressure from multiple factors, a new field was created by combining the numerical values of the dimensions previously mentioned. Following this, three new categories were created into another field which helped to segment each students.
+To identify which students were at risk due to pressure from multiple factors, a new field was created by combining the numerical values of the dimensions previously mentioned. Following this, three new categories were created a new field which helped to segment each student.
 
 ```python
 df['risk_score'] = (
@@ -204,38 +206,38 @@ Calculations were made to count the amount of students in each category as well 
 
 **Academic Pressure strongly correlates with depression**
 
-More academic pressure shows a 4 times increase from low (1) academic pressure to very high (5). Almost half (0.43) of the students with no academic pressure (0) seem to be affected by depression
+More academic pressure shows a 4 times increase from low (1) academic pressure to very high (5). Almost half (43%) of the students with no academic pressure (0) seem to be affected by depression
 
 **Study Hours shows a positive correlation with depression**
 
-Depression increases as more study hours as spent per day. Students with 6 ≥ hours are above the overall depression rate with 10 to 12 hours being the most impactful.
+Depression increases as more study hours as spent per day. Students with 6 or more hours are above the overall depression rate with 10 to 12 hours being the most impactful.
 
 **Poor lifestyle habits are positively correlated with depression**
 
-The Overall depression rate increases as students engage in poor dietary habits with more than 70% of students who have unhealthy diets reporting depression. The duration of sleep follows a similar pattern but deviation comes with students who sleep 7 to 8 hours which has a higher depression rate than students who sleep for 5 - 6 hours.
+The Overall depression rate increases as students engage in poor dietary habits with more than 70% of students who have unhealthy diets reporting depression. The duration of sleep follows a similar pattern but a deviation appears with students who sleep 7 to 8 hours which has a higher depression rate than students who sleep for 5 - 6 hours.
 
-**Psychological negative factors are quite present within the population**
+**Psychological negative factors are highly prevalent in the dataset population**
 
 65.22% of the students report having experienced suicidal thoughts at least once in their life. 62.52% report having a mental illness within their family history. These factors may influence the prevalence of depression and the rate in which both of them are found is of concern.
 
 **The composite risk score effectively separates risk groups.**
 
-Students with high risk score are associated with high rates of depression. 88.78% of students within the High risk category suffer from certain degree of depression. 
+Students with high risk score are associated with high rates of depression. 88.78% of students within the High risk category suffer from some level of depression. 
 
 ## Business Recommendations
 
-Based on the insights discovered, several practical actions can be taken that could help address and improve the students mental health.
+Based on the insights discovered, several practical actions can be taken that could help address and improve the students' mental health.
 
 ### Monitor high academic pressure environments
 Institutions can implement periodic surveys which help them identify in which aspects and areas the students are experiencing academic pressure and their magnitude. These surveys can be used to help address and mitigate the relevant impact of a high academic pressure environment.
 
 ### Promote healthy lifestyle habits
-Healthy lifestyle habits and their lack of are factors which influence the academic and personal outcomes of students. Institutions could invest in initiatives which aim to provide proper knowledge in the areas of diet and sleep to both students and their parents/guardians. The following areas can be the focus of these programs: improve sleeping conditions, napping and it's benefits, balanced meals and the relevance hydration within the different financial brackets.
+Healthy lifestyle habits and their lack of are factors which influence both the academic and personal outcomes of students. Institutions could invest in initiatives which aim to provide proper knowledge in the areas of diet and sleep to both students and their parents/guardians. The following areas can be the focus of these programs: improve sleeping conditions, napping and its benefits, balanced meals and the relevance of hydration within the different financial brackets.
 
 
 ### Implement early intervention for high-risk students
-Thanks to the risk score, pattern can be extracted which may help identify which students may be within the high risk level or may be heading towards it. This allows institutions and government initiatives to reach those student in need of help.
+Thanks to the risk score, pattern can be extracted which may help identify which students may be within the high risk level or may be heading towards it. This allows institutions and government initiatives to reach those students in need of help.
 
 ## Conclusion
 
-The analysis highlights several factors which are associated with the presence of depression among students, including academic pressure, financial stress, lifestyle habits and psychological factors. The constructed risk score helped, in a simple way, identify different levels of risk and which students fall into each of these tiers, helping identify those students in dire need of help and the pattern they present.
+The analysis highlights several factors which are associated with the presence of depression among students, including academic pressure, financial stress, lifestyle habits and psychological factors. The constructed risk score helped identify different levels of risk and which students fall into each of these tiers, helping identify those students in dire need of help and the pattern they present.
