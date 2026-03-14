@@ -41,8 +41,10 @@ SELECT DISTINCT
 FROM student_depression;
 
 SELECT DISTINCT
-    city
-FROM student_depression;
+    city,
+    COUNT(*)
+FROM student_depression
+GROUP BY 1;
 --a lot of inconsistent values in the city field
 
 SELECT DISTINCT
